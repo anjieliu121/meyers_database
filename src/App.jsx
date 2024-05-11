@@ -7,7 +7,7 @@ import ToggleThemeButton from "./components/ToggleThemeButton.jsx";
 import "./css/App.css"
 import "./css/index.css"
 import Home from "./pages/Home.jsx";
-import Upload from "./pages/Upload.jsx";
+import EmailForm from './pages/EmailForm.jsx';
 import {Routes, Route} from "react-router-dom";
 
 
@@ -42,7 +42,7 @@ const App = () => {
                         <Route path='/covid19/data0001' element={<div>Disabled Users List</div>}></Route>
                         <Route path='/covid19/data0002' element={<div>Profile</div>}></Route>
                         <Route path='/covid19/data0003' element={<div>hi</div>}></Route>
-                        <Route path='/upload' element={<Upload/>}></Route>
+                        <Route path='/upload' element={<EmailForm />}></Route>
                       </Routes>
                   </Content>
               </Layout>

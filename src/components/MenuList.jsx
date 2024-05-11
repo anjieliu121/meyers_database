@@ -1,16 +1,16 @@
 import React from 'react'
 import {Menu} from "antd";
-import {HomeOutlined, SettingOutlined, BarsOutlined} from '@ant-design/icons';
+import {HomeOutlined, SettingOutlined, BarsOutlined, NodeIndexOutlined} from '@ant-design/icons';
 import "../css/MenuList.css";
 import {Link} from "react-router-dom";
 
 const MenuList = ({darkTheme}) => {
     return (
-        <Menu theme={darkTheme ? 'dark' : 'light'} mode="inline" className="menu-bar" defaultSelectedKeys={["home"]} openKeys={"covid19"}>
+        <Menu theme={darkTheme ? 'dark' : 'light'} mode="inline" className="menu-bar" defaultSelectedKeys={["home"]}>
             <Menu.Item key="home" icon={<HomeOutlined/>}>
                 <Link to="/">Home</Link>
             </Menu.Item>
-            <Menu.SubMenu key="covid19" icon={<BarsOutlined/>} title="COVID-19">
+            <Menu.SubMenu key="covid19" icon={<NodeIndexOutlined />} title="COVID-19">
                 <Menu.Item key="data0000">
                     <Link to="/covid19/data0000">Data 0000</Link>
                 </Menu.Item>
@@ -24,10 +24,10 @@ const MenuList = ({darkTheme}) => {
                     <Link to="/covid19/data0003">Data 0003</Link>
                 </Menu.Item>
             </Menu.SubMenu>
-            <Menu.SubMenu key="rsv" icon={<BarsOutlined/>} title="RSV">
+            <Menu.SubMenu key="rsv" icon={<NodeIndexOutlined />} title="RSV">
 
             </Menu.SubMenu>
-            <Menu.SubMenu key="birdflu" icon={<BarsOutlined/>} title="Bird Flu">
+            <Menu.SubMenu key="birdflu" icon={<NodeIndexOutlined />} title="Bird Flu">
 
             </Menu.SubMenu>
 
