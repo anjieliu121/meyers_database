@@ -1,15 +1,21 @@
-import React from 'react'
+import React, {useState} from 'react'
 import {Menu} from "antd";
 import {HomeOutlined, SettingOutlined, BarsOutlined, NodeIndexOutlined} from '@ant-design/icons';
 import "../css/MenuList.css";
 import {Link} from "react-router-dom";
 
 const MenuList = ({darkTheme}) => {
+    const href = window.location.href.split('/');
+    const currentTab = (href[href.length - 1] === '') ? 'home' : href[href.length - 1];
+    //TODO: change the defaultOpenKeys to the Menu.SubMenu that has the current tab opened
+    //https://stackoverflow.com/questions/67514909/how-to-open-close-antd-submenu-programatically
+    console.log(href)
     return (
-        <Menu theme={darkTheme ? 'dark' : 'light'} mode="inline" className="menu-bar" defaultSelectedKeys={["home"]}>
+        <Menu theme={darkTheme ? 'dark' : 'light'} mode="inline" className="menu-bar" defaultSelectedKeys={[currentTab]} defaultOpenKeys={['covid19']}>
             <Menu.Item key="home" icon={<HomeOutlined/>}>
                 <Link to="/">Home</Link>
             </Menu.Item>
+
             <Menu.SubMenu key="covid19" icon={<NodeIndexOutlined />} title="COVID-19">
                 <Menu.Item key="data0000">
                     <Link to="/covid19/data0000">Data 0000</Link>
@@ -24,9 +30,11 @@ const MenuList = ({darkTheme}) => {
                     <Link to="/covid19/data0003">Data 0003</Link>
                 </Menu.Item>
             </Menu.SubMenu>
+
             <Menu.SubMenu key="rsv" icon={<NodeIndexOutlined />} title="RSV">
 
             </Menu.SubMenu>
+
             <Menu.SubMenu key="birdflu" icon={<NodeIndexOutlined />} title="Bird Flu">
 
             </Menu.SubMenu>
