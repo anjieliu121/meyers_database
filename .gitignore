@@ -7,6 +7,8 @@ backend/destination.csv
 backend/instructions.txt
 constants.py
 src/static/lab_emails.json
+src/static/EmailForm.png
+
 
 # Logs
 logs
