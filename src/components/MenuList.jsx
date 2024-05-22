@@ -4,7 +4,23 @@ import {HomeOutlined, SettingOutlined, BarsOutlined, NodeIndexOutlined} from '@a
 import "../css/MenuList.css";
 import {Link} from "react-router-dom";
 
-const MenuList = ({darkTheme}) => {
+const MenuList = ({darkTheme, dataChanger}) => {
+    function getData() {
+        fetch("/data?blobname=raw%2Fstate_climate_data.csv", {
+          method: "GET"
+        })
+        .then(res => res.json()).then((data) => {
+          dataChanger({
+            dataset: "state climate data",
+            data: data})
+          console.log(data)
+        }).catch((error) => {
+          if (error.response) {
+            console.log(error.response)
+            console.log(error.response.status)
+            console.log(error.response.headers)
+            }
+    })}
     const href = window.location.href.split('/');
     const currentTab = (href[href.length - 1] === '') ? 'home' : href[href.length - 1];
     //TODO: change the defaultOpenKeys to the Menu.SubMenu that has the current tab opened
@@ -17,7 +33,7 @@ const MenuList = ({darkTheme}) => {
             </Menu.Item>
 
             <Menu.SubMenu key="covid19" icon={<NodeIndexOutlined />} title="COVID-19">
-                <Menu.Item key="data0000">
+                <Menu.Item key="data0000" onclick={getData}>
                     <Link to="/covid19/data0000">Data 0000</Link>
                 </Menu.Item>
                 <Menu.Item key="data0001">

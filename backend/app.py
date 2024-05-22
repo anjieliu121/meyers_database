@@ -1,32 +1,56 @@
 from google.cloud import storage
+from flask import Flask, request, jsonify
 import os
-from flask import Flask
-from flask_sqlalchemy import SQLAlchemy
-from flask_migrate import Migrate
-from flask_marshmallow import Marshmallow
-from flask_cors import CORS
 
 # Set the environment variable for the Google Cloud credentials
 os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = "/Users/anjieliu/Documents/MyProjects/meyers_database/backend/meyers-database-eddda2be6c6c.json"
-db = SQLAlchemy()
-migrate = Migrate()
-ma = Marshmallow()
-cors = CORS()
+bucket_name = 'meyers_database'
 
-def create_app():
-    """Application-factory pattern: this means calling a method instead of a constructor to make an object"""
-    app = Flask(__name__)
-    app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///database.db"
-    app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+def create_app(test_config=None):
+    # create and configure the app
+    app = Flask(__name__, instance_relative_config=True)
+    app.config.from_mapping(
+        SECRET_KEY='dev',
+        DATABASE=os.path.join(app.instance_path, 'flaskr.sqlite'),
+    )
 
-    # Initialize extensions
-    # To use the application instances above, instantiate with an application:
-    db.init_app(app)
-    migrate.init_app(app, db)
-    ma.init_app(app)
-    cors.init_app(app)
+    if test_config is None:
+        # load the instance config, if it exists, when not testing
+        app.config.from_pyfile('config.py', silent=True)
+    else:
+        # load the test config if passed in
+        app.config.from_mapping(test_config)
+
+    # ensure the instance folder exists
+    try:
+        os.makedirs(app.instance_path)
+    except OSError:
+        pass
+
+    # a simple page that says hello
+    @app.route('/hello')
+    def hello():
+        return 'Hello, World!'
+
+    @app.route('/data')
+    def getData():
+        blobname = request.args.get('blobname')
+        download_blob(bucket_name, blobname, "destination.csv")
+        return 'Check destination.csv!'
+    '''@app.route('/upload')
+    def upload_image():
+        file = request.files.get('image')
+        if not file:
+            return jsonify({'error': 'Image is required'}), 400,
+        tmp_file = f'/tmp/{file.filename}'
+        file.save(tmp_file)
+        # url = gcs_upload_file(tmp_file)
+        os.remove(tmp_file)'''
 
     return app
+
+
+
 def list_blobs(bucket_name):
     """Lists all the blobs in the bucket."""
     storage_client = storage.Client()
@@ -35,18 +59,32 @@ def list_blobs(bucket_name):
     for blob in blobs:
         print(blob.name)
 
-
 def download_blob(bucket_name, source_blob_name, destination_file_name):
     """Downloads a blob from the bucket."""
     storage_client = storage.Client()
     bucket = storage_client.bucket(bucket_name)
     blob = bucket.blob(source_blob_name)
-    blob.download_to_filename(destination_file_name)
+    # blob.download_to_filename(destination_file_name)
+    # print(f"Blob {source_blob_name} downloaded to {destination_file_name}.")
+    return blob.download_as_string()
 
-    print(f"Blob {source_blob_name} downloaded to {destination_file_name}.")
 
+'''def gcs_upload_file(bucket_name, filename: str):
+    storage_client = storage.Client()
+    bucket = storage_client.bucket(bucket_name)
+    blob = bucket.blob(filename.split("/")[-1])
+    blob.upload_from_filename(filename)
+    # blob.make_public()
+    # public_url: str = blob.public_url
+    # print(f"Image uploaded to {public_url}")
+    print("Image uploaded privately")
+    os.remove(filename)'''
 
 # Replace 'your-bucket-name' with your bucket name
-bucket_name = 'meyers_database'
-list_blobs(bucket_name)
-# download_blob(bucket_name, 'your-source-blob-name', 'local-destination-file.txt')
+
+if __name__ == "__main__":
+    bucket_name = 'meyers_database'
+    list_blobs(bucket_name)
+    print('HIIII')
+    download_blob(bucket_name, 'raw/state_climate_data.csv', 'destination.csv')
+    # download_blob(bucket_name, 'your-source-blob-name', 'local-destination-file.txt')

@@ -1,12 +1,12 @@
-google-cloud-storage
-Flask
 alembic
 click
+Flask
 Flask-Cors
 flask-marshmallow
 Flask-Migrate
 Flask-SQLAlchemy
 greenlet
+google-cloud-storage
 gunicorn
 itsdangerous
 Jinja2
@@ -14,7 +14,6 @@ Mako
 MarkupSafe
 marshmallow
 marshmallow-sqlalchemy
-
 python-dateutil
 python-editor
 six
