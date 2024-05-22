@@ -1,5 +1,5 @@
 from google.cloud import storage
-from flask import Flask, request, jsonify
+from flask import Flask, request
 import os
 from constants import *
 

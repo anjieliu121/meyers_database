@@ -2,11 +2,10 @@ import React, { useState, useRef } from 'react';
 import emailjs from '@emailjs/browser';
 import "bootstrap/dist/css/bootstrap.min.css";
 import "bootstrap/dist/js/bootstrap.bundle.min";
-
 import "../css/App.css";
 import "../css/EmailForm.css";
 
-export const EmailForm = () => {
+export const ShareData = () => {
   const form = useRef();
 
 
@@ -43,7 +42,8 @@ export const EmailForm = () => {
 
               <input type="text" name="from_eid" placeholder="Your EID" className="form-input" required/>
 
-              <input type="email" name="from_email" placeholder="Your Email" className="form-input" pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$" required/>
+              <input type="email" name="from_email" placeholder="Your Email" className="form-input"
+                     pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$" required/>
 
               <textarea name="message" placeholder="Source link of data and any comments you have."
                         className="form-input" cols="30" rows="10"/>
@@ -66,6 +66,14 @@ export const EmailForm = () => {
                   <option value="others">Others</option>
               </select>
 
+              <select className="form-select" aria-label="Default select example" name="lab_position">
+                  <option selected>Select your position in Meyers Lab</option>
+                  <option value="principal_investigator">Principal Investigator</option>
+                  <option value="postdocs_researchers">Postdocs and Researchers</option>
+                  <option value="graduate">Graduate Students</option>
+                  <option value="undergraduate">Undergraduate Students</option>
+              </select>
+
 
               <button type="submit">Send Email <img src="src/static/SubmitBtnArrow.png"/></button>
           </form>
@@ -76,4 +84,4 @@ export const EmailForm = () => {
   );
 };
 
-export default EmailForm;
+export default ShareData;
