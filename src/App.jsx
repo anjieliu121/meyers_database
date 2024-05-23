@@ -43,7 +43,7 @@ const App = () => {
                         <Route path='/covid19/data0001' element={<div>Disabled Users List</div>}></Route>
                         <Route path='/covid19/data0002' element={<div>Profile</div>}></Route>
                         <Route path='/covid19/data0003' element={<div>hi</div>}></Route>
-                        <Route path='/upload' element={<ShareData />}></Route>
+                        <Route path='/sharedata' element={<ShareData />}></Route>
                       </Routes>
                   </Content>
               </Layout>

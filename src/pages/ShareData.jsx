@@ -11,10 +11,6 @@ import emails from '../static/lab_emails.json';
 export const ShareData = () => {
   const form = useRef();
 
-  // for email validation
-  const [email, setEmail] = useState('');
-  const [isValidEmail, setIsValidEmail] = useState(true);
-
 
 
 
@@ -24,11 +20,6 @@ export const ShareData = () => {
     const templateId = 'template_g1rd0sb';
     const publicKey = 'fD2ggtXRbcEzUbXND';
 
-    // for email validation
-    if (!emails.email.includes(email)) {
-      setIsValidEmail(false);
-      return;
-    }
 
     emailjs
       .sendForm(serviceId, templateId, form.current, {
@@ -45,12 +36,6 @@ export const ShareData = () => {
       );
   };
 
-  // for email validation
-  const handleEmailChange = (e) => {
-    setEmail(e.target.value);
-    setIsValidEmail(true); // Reset the error message when the user starts typing
-  };
-
 
   return (
       <div className="form-container form-background">
@@ -64,10 +49,9 @@ export const ShareData = () => {
 
               <input type="text" name="from_eid" placeholder="Your EID" className="form-input" required/>
 
-              <input type="email" name="from_email" placeholder="Your Email" className="form-input" value={email}
-                     pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$" required onChange={handleEmailChange}/>
 
-              {!isValidEmail && <p style={{ color: 'red' }}>Email not found in the allowed list.</p>}
+              <input type="email" name="from_email" placeholder="Your Email" className="form-input"
+                     pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$" required/>
 
               <textarea name="message" placeholder="Source link of data and any comments you have."
                         className="form-input" cols="30" rows="10"/>

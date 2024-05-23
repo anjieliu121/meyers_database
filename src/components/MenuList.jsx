@@ -55,8 +55,8 @@ const MenuList = ({darkTheme, dataChanger}) => {
 
             </Menu.SubMenu>
 
-            <Menu.Item key="upload" icon={<SettingOutlined/>} danger={true}>
-                <Link to="/upload">Upload</Link>
+            <Menu.Item key="sharedata" icon={<SettingOutlined/>} danger={true}>
+                <Link to="/sharedata">Share Data</Link>
             </Menu.Item>
         </Menu>
     )
