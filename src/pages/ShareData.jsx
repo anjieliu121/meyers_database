@@ -10,6 +10,7 @@ import emails from '../static/lab_emails.json';
 
 export const ShareData = () => {
   const form = useRef();
+  const emailEntries = Object.entries(emails);
 
 
 
@@ -21,6 +22,8 @@ export const ShareData = () => {
     const publicKey = 'fD2ggtXRbcEzUbXND';
 
 
+
+
     emailjs
       .sendForm(serviceId, templateId, form.current, {
         publicKey: publicKey,
@@ -28,6 +31,7 @@ export const ShareData = () => {
       .then(
         () => {
           console.log('SUCCESS!');
+          alert("Data shared successfully. Thank you!");
           window.location.reload();
         },
         (error) => {
@@ -45,18 +49,23 @@ export const ShareData = () => {
                   <h1 className="form-title">Share Datasets</h1>
                   <hr className="form-hr"/>
               </div>
+
+              <select className="form-select" aria-label="Default select example" name="lab_position">
+                  <option selected>Select your position in Meyers Lab</option>
+                  <option value="principal_investigator">Principal Investigator</option>
+                  <option value="postdocs_researchers">Postdocs and Researchers</option>
+                  <option value="graduate">Graduate Students</option>
+                  <option value="undergraduate">Undergraduate Students</option>
+                  <option value="not_in_lab">I am not a part of Meyers Lab</option>
+              </select>
+
               <input type="text" name="from_name" placeholder="Your Name" className="form-input" required/>
 
               <input type="text" name="from_eid" placeholder="Your EID" className="form-input" required/>
 
 
               <input type="email" name="from_email" placeholder="Your Email" className="form-input"
-                     pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$" required/>
-
-              <textarea name="message" placeholder="Source link of data and any comments you have."
-                        className="form-input" cols="30" rows="10"/>
-
-              <input type="file" name="my_file"/>
+                     pattern="\w+([-+.']\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*" required />
 
               <select className="form-select" aria-label="Default select example" name="disease_type">
                   <option selected>Select disease type</option>
@@ -74,15 +83,10 @@ export const ShareData = () => {
                   <option value="others">Others</option>
               </select>
 
-              <select className="form-select" aria-label="Default select example" name="lab_position">
-                  <option selected>Select your position in Meyers Lab</option>
-                  <option value="principal_investigator">Principal Investigator</option>
-                  <option value="postdocs_researchers">Postdocs and Researchers</option>
-                  <option value="graduate">Graduate Students</option>
-                  <option value="undergraduate">Undergraduate Students</option>
-              </select>
+              <textarea name="message" placeholder="Source link of data and any comments you have."
+                        className="form-input" cols="30" rows="10"/>
 
-
+              <input type="file" name="my_file"/>
               <button type="submit">Send Email <img src="src/static/SubmitBtnArrow.png"/></button>
           </form>
           <div className="form-right">

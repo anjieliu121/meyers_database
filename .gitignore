@@ -5,7 +5,7 @@ backend/meyers-database-eddda2be6c6c.json
 backend/__pycache__/
 backend/destination.csv
 backend/instructions.txt
-constants.py
+backend/constants.py
 src/static/lab_emails.json
 src/static/EmailForm.png
 
