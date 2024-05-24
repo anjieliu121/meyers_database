@@ -1,4 +1,5 @@
 import React, { useState, useRef } from 'react';
+import { useForm } from "react-hook-form";
 import emailjs from '@emailjs/browser';
 import "bootstrap/dist/css/bootstrap.min.css";
 import "bootstrap/dist/js/bootstrap.bundle.min";
@@ -10,17 +11,20 @@ import emails from '../static/lab_emails.json';
 
 export const ShareData = () => {
   const form = useRef();
-  const emailEntries = Object.entries(emails);
+  // retrieve approved email list
+  const emailEntries = emails.emails;
+  console.log(emailEntries);
 
 
 
 
-  const sendEmail = (e) => {
+
+
+  const sendEmail = (e, data) => {
     e.preventDefault();
     const serviceId = 'service_egebp1b';
     const templateId = 'template_g1rd0sb';
     const publicKey = 'fD2ggtXRbcEzUbXND';
-
 
 
 
