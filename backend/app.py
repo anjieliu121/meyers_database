@@ -1,15 +1,17 @@
 from google.cloud import storage
-from flask import Flask, request
+from flask import Flask, request, jsonify
 import os
 from constants import *
+from flask_cors import CORS
 
 # Set the environment variable for the Google Cloud credentials
 os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = GOOGLE_APPLICATION_CREDENTIALS
 bucket_name = bucket_name
-
+encoding = 'utf-8'
 def create_app(test_config=None):
     # create and configure the app
     app = Flask(__name__, instance_relative_config=True)
+    CORS(app, resources={r"/*": {"origins": "*"}})
     app.config.from_mapping(
         SECRET_KEY='dev',
         DATABASE=os.path.join(app.instance_path, 'flaskr.sqlite'),
@@ -33,11 +35,20 @@ def create_app(test_config=None):
     def hello():
         return 'Hello, World!'
 
+    # retrieve the GCS blob identified in the arguments
     @app.route('/data')
-    def getData():
+    def get_gcs_data():
         blobname = request.args.get('blobname')
-        download_blob(bucket_name, blobname, "destination.csv")
-        return 'Check destination.csv!'
+        print(blobname)
+        blob_string = download_blob(bucket_name, blobname, "destination.csv")
+        response_body = {
+            "dataset": blobname,
+            "data": blob_string
+        }
+
+        return jsonify(response_body)
+
+    # TODO: Implement upload function to GCS
     '''@app.route('/upload')
     def upload_image():
         file = request.files.get('image')
@@ -51,7 +62,6 @@ def create_app(test_config=None):
     return app
 
 
-
 def list_blobs(bucket_name):
     """Lists all the blobs in the bucket."""
     storage_client = storage.Client()
@@ -60,6 +70,7 @@ def list_blobs(bucket_name):
     for blob in blobs:
         print(blob.name)
 
+
 def download_blob(bucket_name, source_blob_name, destination_file_name):
     """Downloads a blob from the bucket."""
     storage_client = storage.Client()
@@ -67,7 +78,9 @@ def download_blob(bucket_name, source_blob_name, destination_file_name):
     blob = bucket.blob(source_blob_name)
     # blob.download_to_filename(destination_file_name)
     # print(f"Blob {source_blob_name} downloaded to {destination_file_name}.")
-    return blob.download_as_string()
+    blob_string = blob.download_as_bytes()
+    print(blob_string)
+    return blob_string.decode(encoding)
 
 
 '''def gcs_upload_file(bucket_name, filename: str):
@@ -81,9 +94,5 @@ def download_blob(bucket_name, source_blob_name, destination_file_name):
     print("Image uploaded privately")
     os.remove(filename)'''
 
-# Replace 'your-bucket-name' with your bucket name
-
 if __name__ == "__main__":
     list_blobs(bucket_name)
-    # download_blob(bucket_name, 'raw/state_climate_data.csv', 'destination.csv')
-    # download_blob(bucket_name, 'your-source-blob-name', 'local-destination-file.txt')

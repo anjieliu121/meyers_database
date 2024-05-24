@@ -10,6 +10,15 @@ solution
 ## Feature 3.2 Pop-up after Submission
 
 When the form is submitted, a pop-up window shows to confirm that the form is submitted.
-* Solution: alert()
+* Function used: alert()
 * Finished date: 5/23/2024 Thursday 
 * Feature proposed date: 5/21/2024 Tuesday by Shraddha
+
+# Feature 4 Google Cloud Storage Integration
+## Feature 4.1 fetch()
+
+When the user clicks on a data tab, the React app sends a CORS API request to the running Flask server, and the Flask server sends a request to Google Cloud Storage to retrieve the data. The React app then uses hooks to update the webpage with the data retrieved by the Flask server.
+## Bug 4.1 fetch()
+fetch() with proxy in package.json returns text/html
+* Cause: Installing vite causes system to ignore proxy in package.json
+* Solution: simply specify the full url regardless of the proxy value in package.json (or figure out how to configure proxy in vite.config.js)

@@ -87,7 +87,7 @@ export const ShareData = () => {
                         className="form-input" cols="30" rows="10"/>
 
               <input type="file" name="my_file"/>
-              <button type="submit">Send Email <img src="src/static/SubmitBtnArrow.png"/></button>
+              <button type="submit">Upload <img src="src/static/SubmitBtnArrow.png"/></button>
           </form>
           <div className="form-right">
               <img src="src/components/MeyersLabLogo.png"/>
