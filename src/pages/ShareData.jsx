@@ -13,9 +13,6 @@ export const ShareData = () => {
   const form = useRef();
   // retrieve approved email list
   const emailEntries = emails.emails;
-  console.log(emailEntries);
-
-
 
 
 
@@ -29,12 +26,10 @@ export const ShareData = () => {
 
 
     emailjs
-      .sendForm(serviceId, templateId, form.current, {
-        publicKey: publicKey,
-      })
+      .sendForm(serviceId, templateId, form.current, publicKey)
       .then(
-        () => {
-          console.log('SUCCESS!');
+        (result) => {
+          console.log('SUCCESS!', result.text);
           alert("Data shared successfully. Thank you!");
           window.location.reload();
         },

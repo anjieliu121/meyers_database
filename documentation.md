@@ -1,3 +1,17 @@
+# Project Set Up
+* Library used: Vite
+  * Purpose: Easy set-up process of a React application.
+```terminal
+$ npm create vite
+meyers_database
+React
+Javascript
+$ cd meyers_database
+$ npm install
+$ npm run dev
+```
+
+
 # Feature 1 Sidebar Menu
 
 ## Bug 1.1 refresh
@@ -6,6 +20,10 @@ solution
 
 # Feature 2 Home Page
 # Feature 3 Share Data Page
+* Package used: EmailJS
+```terminal
+$ npm install --save @emailjs/browser
+```
 ## Feature 3.1 File Attachment
 ## Feature 3.2 Pop-up after Submission
 

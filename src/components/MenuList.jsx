@@ -77,6 +77,18 @@ const MenuList = ({darkTheme, dataChanger}) => {
                 </Menu.Item>
             </Menu.SubMenu>
 
+            <Menu.SubMenu key="influenza" icon={<NodeIndexOutlined />} title="Influenza">
+                <Menu.Item key="data0004">
+                    <Link to="/influenza/data0004">Data 0004</Link>
+                </Menu.Item>
+                <Menu.Item key="data0005">
+                    <Link to="/influenza/data0005">Data 0005</Link>
+                </Menu.Item>
+                <Menu.Item key="data0006">
+                   <Link to="/influenza/data0006">Data 0006</Link>
+                </Menu.Item>
+            </Menu.SubMenu>
+
             <Menu.SubMenu key="rsv" icon={<NodeIndexOutlined />} title="RSV">
 
             </Menu.SubMenu>
