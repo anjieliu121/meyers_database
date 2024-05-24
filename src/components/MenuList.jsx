@@ -1,6 +1,6 @@
 import React, {useState} from 'react'
 import {Menu} from "antd";
-import {HomeOutlined, SettingOutlined, BarsOutlined, NodeIndexOutlined} from '@ant-design/icons';
+import {HomeOutlined, SettingOutlined, NodeIndexOutlined} from '@ant-design/icons';
 import "../css/MenuList.css";
 import {Link} from "react-router-dom";
 
@@ -12,7 +12,7 @@ const MenuList = ({darkTheme, dataChanger}) => {
     //https://stackoverflow.com/questions/67514909/how-to-open-close-antd-submenu-programatically
     console.log(href)
 
-    //Returns ture only if HTTP status code is in 200 range
+    // Returns ture only if HTTP status code is in 200 range
     const check_HTTP_status = (response) => {
         console.log("Checking HTTP code status")
         if (response.ok) {
