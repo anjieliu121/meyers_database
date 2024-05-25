@@ -17,3 +17,11 @@
     height: 40%;
     width: 40%;
 }
+
+.page-container {
+    height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: space-evenly;
+    background: linear-gradient(#cfe9f2, #fff7f9);
+}

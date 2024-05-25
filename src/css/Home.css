@@ -1,0 +1,23 @@
+.home {
+    width: 100%;
+    position: absolute;
+    top: 50%;
+    transform: translateY(-100%);
+    text-align: center;
+
+}
+
+.home h1 {
+    font-size: 100px;
+    margin-top: 80px;
+    color: #008cba;
+    text-shadow: 2px 2px;
+}
+
+.home p {
+    font-size: 20px;
+    margin: 30px auto;
+    font-weight: 100;
+    line-height: 25px;
+    color: #606060;
+}

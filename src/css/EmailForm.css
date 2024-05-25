@@ -8,18 +8,6 @@ textarea {
   margin: 10px 0px;
 }
 
-
-.form-container {
-    height: 100vh;
-    display: flex;
-    align-items: center;
-    justify-content: space-evenly;
-}
-
-.form-background {
-    background: linear-gradient(#cfe9f2, #fff7f9);
-}
-
 .form-left {
     display: flex;
     flex-direction: column;

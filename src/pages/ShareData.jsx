@@ -56,7 +56,7 @@ export const ShareData = () => {
 
 
   return (
-      <div className="form-container form-background">
+      <div className="page-container">
           <div className="form-right">
               <div>
                   <h1 className="form-title">Share Datasets</h1>
