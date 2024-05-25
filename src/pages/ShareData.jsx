@@ -13,41 +13,65 @@ export const ShareData = () => {
   const form = useRef();
   // retrieve approved email list
   const emailEntries = emails.emails;
+  // Define state for storing the email
+  const [email, setEmail] = useState('');
+
+  const emailValid = (email) => {
+        console.log(email);
+        const isApproved = emailEntries.includes(email);
+        return isApproved;
+  };
+  // Event handler for when the email input changes
+  const handleEmailChange = (e) => {
+    setEmail(e.target.value);
+  };
 
 
-
-
-  const sendEmail = (e, data) => {
+  const sendEmail = (e) => {
     e.preventDefault();
     const serviceId = 'service_egebp1b';
     const templateId = 'template_g1rd0sb';
     const publicKey = 'fD2ggtXRbcEzUbXND';
+    if(emailValid(email)){
+        console.log("test 1");
+        emailjs
+          .sendForm(serviceId, templateId, form.current, publicKey)
+          .then(
+            (result) => {
+              console.log('SUCCESS!', result.text);
+              alert("Data shared successfully. Thank you!");
+              window.location.reload();
+            },
+            (error) => {
+              console.log('FAILED...', error.text);
+            },
+          );
+    } else {
+          alert("Email is not approved. Please contact [anjie.liu@utexas.edu] for approval.");
+          //window.location.reload();
+    }
 
 
-
-    emailjs
-      .sendForm(serviceId, templateId, form.current, publicKey)
-      .then(
-        (result) => {
-          console.log('SUCCESS!', result.text);
-          alert("Data shared successfully. Thank you!");
-          window.location.reload();
-        },
-        (error) => {
-          console.log('FAILED...', error.text);
-        },
-      );
   };
 
 
   return (
       <div className="form-container form-background">
-          <form encType="multipart/form-data" method="post" ref={form} onSubmit={sendEmail}
-                className='emailForm form-left'>
+          <div className="form-right">
               <div>
                   <h1 className="form-title">Share Datasets</h1>
                   <hr className="form-hr"/>
+                  <p className="form-notice">
+                      Currently, only approved personals can submit datasets.
+                      Please contact <a href="mailto: anjie.liu@utexas.edu">anjie.liu@utexas.edu</a> to be added to the approved list.
+                      You will receive a response within 48 hours. Thank you.
+                  </p>
               </div>
+              <img src="src/components/MeyersLabLogo.png"/>
+          </div>
+          <form encType="multipart/form-data" method="post" ref={form} onSubmit={sendEmail}
+                className='emailForm form-left'>
+
 
               <select className="form-select" aria-label="Default select example" name="lab_position">
                   <option selected>Select your position in Meyers Lab</option>
@@ -64,7 +88,10 @@ export const ShareData = () => {
 
 
               <input type="email" name="from_email" placeholder="Your Email" className="form-input"
-                     pattern="\w+([-+.']\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*" required />
+                     pattern="\w+([-+.']\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*"
+                     value={email}
+                     onChange={handleEmailChange}
+                     required/>
 
               <select className="form-select" aria-label="Default select example" name="disease_type">
                   <option selected>Select disease type</option>
@@ -88,9 +115,7 @@ export const ShareData = () => {
               <input type="file" name="my_file"/>
               <button type="submit">Upload <img src="src/static/SubmitBtnArrow.png"/></button>
           </form>
-          <div className="form-right">
-              <img src="src/components/MeyersLabLogo.png"/>
-          </div>
+
       </div>
   );
 };
