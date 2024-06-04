@@ -56,9 +56,9 @@ def download_blob(bucket_name, source_blob_name):
     storage_client = storage.Client()
     bucket = storage_client.bucket(bucket_name)
     blob = bucket.blob(source_blob_name)
-    blob_string = blob.download_as_bytes()
-    # print(blob_string)
-    return blob_string.decode(encoding)
+    blob_bytes = blob.download_as_bytes()
+    # print(blob_bytes)
+    return blob_bytes.decode(encoding)
 
 
 '''def gcs_upload_file(bucket_name, filename: str):
