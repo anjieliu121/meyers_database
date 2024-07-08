@@ -8,9 +8,10 @@ const MenuList = ({darkTheme, dataChanger}) => {
 
     const href = window.location.href.split('/');
     const currentTab = (href[href.length - 1] === '') ? 'home' : href[href.length - 1];
+    //const currentTab = 'home';
     //TODO: change the defaultOpenKeys to the Menu.SubMenu that has the current tab opened
     //https://stackoverflow.com/questions/67514909/how-to-open-close-antd-submenu-programatically
-    console.log(href)
+    //console.log(href)
 
     // Returns ture only if HTTP status code is in 200 range
     const check_HTTP_status = (response) => {
@@ -41,13 +42,13 @@ const MenuList = ({darkTheme, dataChanger}) => {
             console.log(response)
             console.log("Onto json()...")
             console.log(response.headers.get('Content-Type'))
-            const data = await response.text()
+            const content = await response.json()
 
-            console.log(data)
+            console.log(content)
             console.log("Trying to change the data...")
             dataChanger({
-                dataset: "State climate data",
-                data: data
+                name: "State climate data",
+                content: content
             })
         } catch (error) {
             // Output e.g.: "Fetch Error: 404, Not found"
@@ -63,25 +64,25 @@ const MenuList = ({darkTheme, dataChanger}) => {
             </Menu.Item>
 
             <Menu.SubMenu key="covid19" icon={<NodeIndexOutlined />} title="COVID-19">
-                <Menu.Item key="data0000" onClick={getData}>
-                    <Link to="/covid19/data0000">Data 0000</Link>
+                <Menu.Item key="data0000">
+                    <Link to="/covid19/data0000">Reported Patient Impact and Hospital Capacity by State Timeseries</Link>
                 </Menu.Item>
                 <Menu.Item key="data0001">
-                    <Link to="/covid19/data0001">Data 0001</Link>
+                    <Link to="/covid19/data0001">Case Surveillance Public Use Data with Geography</Link>
                 </Menu.Item>
                 <Menu.Item key="data0002">
-                   <Link to="/covid19/data0002">Data 0002</Link>
+                   <Link to="/covid19/data0002">Cumulative Percentage of Adults 18 Years and Older Vaccinated with the Updated 2023-24 COVID-19 Vaccine</Link>
                 </Menu.Item>
                 <Menu.Item key="data0003">
-                    <Link to="/covid19/data0003">Data 0003</Link>
+                    <Link to="/covid19/data0003">Cumulative Percentage of Children Ages 6 Months -17 Years Who Are Up to Date with the Updated 2023-24 COVID-19 Vaccine</Link>
                 </Menu.Item>
             </Menu.SubMenu>
 
             <Menu.SubMenu key="influenza" icon={<NodeIndexOutlined />} title="Influenza">
-                <Menu.Item key="data0004">
-                    <Link to="/influenza/data0004">Data 0004</Link>
+                <Menu.Item key="data0004" >
+                    <Link to="/influenza/data0004">Age Specific Coverage Flu RD4 2023-24</Link>
                 </Menu.Item>
-                <Menu.Item key="data0005">
+                <Menu.Item key="data0005" onClick={getData}>
                     <Link to="/influenza/data0005">Data 0005</Link>
                 </Menu.Item>
                 <Menu.Item key="data0006">
