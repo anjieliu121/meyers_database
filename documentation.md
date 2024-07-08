@@ -53,6 +53,11 @@ After even more searching, I can safely say the bug is due to the the version of
 
 # Bug 7 `git add` not working
 While `git status` works anywhere in the project, make sure to be in a folder that contains the changed file to run `git add`
+
+# Bug 8 Permission to Push Denied
+* Cause: Windows has already stored git credentials that it uses regardless of the account you're signed into in VSCode
+* Solution: Control panel > user accounts > credential manager > Windows credentials > Remove Generic credentials for git:https://github.com
+
 # Feature 1 Sidebar Menu
 
 ## Bug 1.1 refresh
