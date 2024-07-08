@@ -3,6 +3,7 @@
 vite.config.js
 backend/meyers-database-eddda2be6c6c.json
 backend/__pycache__/
+backend/venv/
 backend/destination.csv
 backend/instructions.txt
 backend/constants.py
