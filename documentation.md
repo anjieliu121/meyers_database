@@ -21,7 +21,11 @@ Nonetheless, it seems like `pip3` is a valid command
 
 Uncaught ReferenceError: react is not defined
 
-Solution: add `import React from "react"` at the top of every React component that returns an HTML chunk (ToggleThemeButton.jsx, Home.jsx, ShareData.jsx, etc.)
+Much better solution: Include react as a plugin in vite.config.js with `@vitejs/plugin-react`. Then, you only need to `import React from "react"` at the top of `main.jsx`
+
+Previous bad solution: add `import React from "react"` at the top of every React component that returns an HTML chunk (ToggleThemeButton.jsx, Home.jsx, ShareData.jsx, etc.)
+
+
 
 ## Bug 3 CORS
 
