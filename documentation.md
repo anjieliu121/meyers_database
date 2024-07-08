@@ -10,7 +10,7 @@ $ cd meyers_database
 $ npm install
 $ npm run dev
 ```
-# Windows Bugs
+# General Bugs
 
 ## Bug 1 Python
 `python3` command does not exist on Windows because Windows does not have Python installed by default and hence does not distinguish between Python 2 and Python 3
@@ -51,6 +51,8 @@ Some more information: https://stackoverflow.com/questions/58564162/what-is-the-
 
 After even more searching, I can safely say the bug is due to the the version of the Python executable (not necessarily the version of Flask). I'm not sure about the `google.cloud` library, but `flask_cors` requires Python 3.8 or later. The Python executable that `flask run` uses is Python 3.7 which is not supported by these newer libraries. Essentially, adding `python -m` ensures the correct Python version is used when there are multiple Python versions on the computer.
 
+# Bug 7 `git add` not working
+While `git status` works anywhere in the project, make sure to be in a folder that contains the changed file to run `git add`
 # Feature 1 Sidebar Menu
 
 ## Bug 1.1 refresh
