@@ -1,4 +1,4 @@
-import React, { useState, useRef } from 'react';
+import { useState, useRef } from 'react';
 import { useForm } from "react-hook-form";
 import emailjs from '@emailjs/browser';
 import "bootstrap/dist/css/bootstrap.min.css";
