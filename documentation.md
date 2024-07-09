@@ -58,6 +58,12 @@ While `git status` works anywhere in the project, make sure to be in a folder th
 * Cause: Windows has already stored git credentials that it uses regardless of the account you're signed into in VSCode
 * Solution: Control panel > user accounts > credential manager > Windows credentials > Remove Generic credentials for git:https://github.com
 
+# Bug 9 Commit is associated with a wrong account
+* Cause: `user.name` and `user.email` aren't configured correctly in VSCode
+* Solution: `git config --global user.name "Username"`
+`git config --global user.email "Email"`
+* Notes: The `--global` flag seems to be necessary, while the double quotes aren't necessary. Use `git config -l` to check all configurations
+
 # Feature 1 Sidebar Menu
 
 ## Bug 1.1 refresh
