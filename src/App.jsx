@@ -58,10 +58,17 @@ const pageInfo = {
         },
     ],
 }
+
+/**
+ * The root App component; defines what to display for each url route
+ *
+ * @component
+ * @returns {JSX.Element} The rendered App
+ */
 const App = () => {
   const [darkTheme, setDarkTheme] = useState(true);
   const [collapsed, setCollapsed] = useState(false);
-  const [dataBlob, setDataBlob]=useState(null);
+  const [dataBlob, setDataBlob] = useState(null);
   const toggleTheme = () => {setDarkTheme(!darkTheme);}
   const {token: {colorBgContainer}} = theme.useToken();
   const { Title } = Typography;
@@ -131,6 +138,8 @@ const App = () => {
                                 pageInfo={pageInfo.climate[0]}
                             />
                         }></Route>
+
+                        
                         <Route path='/sharedata' element={<ShareData />}></Route>
                       </Routes>
                   </Content>

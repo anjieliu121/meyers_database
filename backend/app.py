@@ -8,7 +8,8 @@ from flask_cors import CORS
 os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = GOOGLE_APPLICATION_CREDENTIALS
 encoding = 'utf-8'
 
-
+"""Sets up the Python server that's caled by JavaScript front-end;
+the Python server itself acts as a client to the GCS server"""
 def create_app():
     # create and configure the app
     app = Flask(__name__, instance_relative_config=True)
@@ -41,16 +42,6 @@ def create_app():
 
     return app
 
-
-def list_blobs(bucket_name):
-    """Lists all the blobs in the bucket."""
-    storage_client = storage.Client()
-    blobs = storage_client.list_blobs(bucket_name)
-
-    for blob in blobs:
-        print(blob.name)
-
-
 def download_blob(bucket_name, source_blob_name):
     """Downloads a blob from the bucket."""
     storage_client = storage.Client()
@@ -60,6 +51,13 @@ def download_blob(bucket_name, source_blob_name):
     # print(blob_bytes)
     return blob_bytes.decode(encoding)
 
+def list_blobs(bucket_name):
+    """Lists all the blobs in the bucket."""
+    storage_client = storage.Client()
+    blobs = storage_client.list_blobs(bucket_name)
+
+    for blob in blobs:
+        print(blob.name)
 
 '''def gcs_upload_file(bucket_name, filename: str):
     storage_client = storage.Client()

@@ -8,6 +8,13 @@ import "../css/EmailForm.css";
 
 import emails from '../static/lab_emails.json';
 
+/**
+ * The page that allows users to submit datasets
+ *
+ * @component
+ * @returns {JSX.Element} The rendered ShareData component
+ *
+ */
 
 export const ShareData = () => {
   const form = useRef();

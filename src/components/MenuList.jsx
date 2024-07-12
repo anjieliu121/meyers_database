@@ -4,8 +4,17 @@ import {HomeOutlined, SettingOutlined, NodeIndexOutlined} from '@ant-design/icon
 import "../css/MenuList.css";
 import {Link} from "react-router-dom";
 
+/**
+ * The sidebar menu that allows users to choose what dataset to display
+ *
+ * @component
+ * @param {boolean} darkTheme Only turns on dark theme for the sidebar menu if true
+ * @function dataChanger Changes the dataset requested (changes state)
+ * @returns {JSX.Element} The rendered MenuList component
+ *
+ */
 const MenuList = ({darkTheme, dataChanger}) => {
-
+    console.log(typeof dataChanger);
     const href = window.location.href.split('/');
     const currentTab = (href[href.length - 1] === '') ? 'home' : href[href.length - 1];
     //const currentTab = 'home';

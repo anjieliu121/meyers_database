@@ -3,6 +3,13 @@ import "bootstrap/dist/js/bootstrap.bundle.min";
 import "../css/App.css";
 import "../css/Home.css";
 
+/**
+ * The home page
+ *
+ * @component
+ * @returns {JSX.Element} The rendered Home component
+ *
+ */
 const Home = () => {
   return (
       <div className="page-container">

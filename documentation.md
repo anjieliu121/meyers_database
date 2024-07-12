@@ -64,6 +64,24 @@ While `git status` works anywhere in the project, make sure to be in a folder th
 `git config --global user.email "Email"`
 * Notes: The `--global` flag seems to be necessary, while the double quotes aren't necessary. Use `git config -l` to check all configurations
 
+# Bug 10 antd
+[I haven't really looked into this yet](https://github.com/ant-design/ant-design/issues/48709)
+
+# Bug 11 TailWindCSS stopped working after incorporating shadcn-ui
+* Cause: During the `init` process, you have likely added a custom Tailwind prefix
+* Solution: Manually add the prefix to all existing classes per the rules of Tailwind prefixes found [here](https://tailwindcss.com/docs/configuration#prefix)
+* Notes: I'm sure there's a better way, but since I haven't used that much TailwindCSS yet, I just added the prefixes manually. Remember to ctrl + F "className".
+
+# Bug 11.1 Wrong Tailwind class name in shadcn-ui implementation
+* Cause: One of the classes is `tw--mx-1`
+* Solution: The correct way to prefix the negative value is `-tw-mx-1`
+* Notes: I guess this is the benefit of directly installing code to the local repository: if there are bugs, I can just fix it myself?
+
+# Bug 12 Tanstack React Table showing no results
+* Cause: There seems to be undefined behavior when the data provided does not include all of the column definitions.
+* Cause 2: There is also undefined behavior when the column id has a `.`
+* Solution: Ensure all of the column ids (generally the `accessorKey` attributes in the column definitions) are included in the keys of your dataset to prevent unexpected behaviors. Also, generally ensure the keys match JavaScript naming conventions. Change special characters like `.` in keys if necessary.
+
 # Feature 1 Sidebar Menu
 
 ## Bug 1.1 refresh
