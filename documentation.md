@@ -3,7 +3,7 @@
   * Purpose: Easy set-up process of a React application.
 ```terminal
 $ npm create vite
-meyers_database
+mey bers_database
 React
 Javascript
 $ cd meyers_database
@@ -82,6 +82,40 @@ While `git status` works anywhere in the project, make sure to be in a folder th
 * Cause 2: There is also undefined behavior when the column id has a `.`
 * Solution: Ensure all of the column ids (generally the `accessorKey` attributes in the column definitions) are included in the keys of your dataset to prevent unexpected behaviors. Also, generally ensure the keys match JavaScript naming conventions. Change special characters like `.` in keys if necessary.
 
+# Bug 7 `git add` not working
+While `git status` works anywhere in the project, make sure to be in a folder that contains the changed file to run `git add`
+
+# Bug 8 Permission to Push Denied
+* Cause: Windows has already stored git credentials that it uses regardless of the account you're signed into in VSCode
+* Solution: Control panel > user accounts > credential manager > Windows credentials > Remove Generic credentials for git:https://github.com
+
+# Bug 9 Commit is associated with a wrong account
+* Cause: `user.name` and `user.email` aren't configured correctly in VSCode
+* Solution: `git config --global user.name "Username"`
+`git config --global user.email "Email"`
+* Notes: The `--global` flag seems to be necessary, while the double quotes aren't necessary. Use `git config -l` to check all configurations
+
+<<<<<<< HEAD
+# Bug 10 antd
+[I haven't really looked into this yet](https://github.com/ant-design/ant-design/issues/48709)
+
+# Bug 11 TailWindCSS stopped working after incorporating shadcn-ui
+* Cause: During the `init` process, you have likely added a custom Tailwind prefix
+* Solution: Manually add the prefix to all existing classes per the rules of Tailwind prefixes found [here](https://tailwindcss.com/docs/configuration#prefix)
+* Notes: I'm sure there's a better way, but since I haven't used that much TailwindCSS yet, I just added the prefixes manually. Remember to ctrl + F "className".
+
+# Bug 11.1 Wrong Tailwind class name in shadcn-ui implementation
+* Cause: One of the classes is `tw--mx-1`
+* Solution: The correct way to prefix the negative value is `-tw-mx-1`
+* Notes: I guess this is the benefit of directly installing code to the local repository: if there are bugs, I can just fix it myself?
+
+# Bug 12 Tanstack React Table showing no results
+* Cause: There seems to be undefined behavior when the data provided does not include all of the column definitions.
+* Cause 2: There is also undefined behavior when the column id has a `.`
+* Solution: Ensure all of the column ids (generally the `accessorKey` attributes in the column definitions) are included in the keys of your dataset to prevent unexpected behaviors. Also, generally ensure the keys match JavaScript naming conventions. Change special characters like `.` in keys if necessary.
+
+=======
+>>>>>>> 3dc98471aedccc2a178b91ae9862bc14355c3b8c
 # Feature 1 Sidebar Menu
 
 ## Bug 1.1 refresh
