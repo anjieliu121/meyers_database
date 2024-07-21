@@ -2,7 +2,7 @@ import { useState, useEffect, useRef } from 'react';
 import "bootstrap/dist/css/bootstrap.min.css";
 import "bootstrap/dist/js/bootstrap.bundle.min";
 import { columns } from "../constants/columns"
-import { DataTable } from "../components/DataTable"
+import DataTable from "../components/DataTable"
 import { parse } from 'csv-parse';
 import {
   Chart as ChartJS,  
@@ -59,6 +59,7 @@ const options = {
   }
 };
 
+const NO_DATA = {};
 /**
  * A page to display data
  *
@@ -74,9 +75,9 @@ const DataDisplay = ({dataBlob, pageInfo}) => {
   const source = pageInfo.source;
   const streamlitLink = pageInfo.streamlitLink;
 
-  const [jsonData, setJsonData] = useState({});
-  const [chartData, setChartData] = useState({});
-  const [chartOptions, setChartOptions] = useState({});
+  const [jsonData, setJsonData] = useState(NO_DATA);
+  const [chartData, setChartData] = useState(NO_DATA);
+  const [chartOptions, setChartOptions] = useState(NO_DATA);
 
   const chartRef = useRef(null);
   const records = [];
@@ -196,14 +197,19 @@ const DataDisplay = ({dataBlob, pageInfo}) => {
     parser.on('error', function(err){
       console.error(err.message);
     });
+
     if (dataBlob !== null) {
       console.log("Processing data blob");
       console.log(dataBlob);
       //console.log(dataBlob.content.data);
       parser.write(dataBlob.content.data);
+    } else {
+      setJsonData(NO_DATA);
+      setChartData(NO_DATA);
+      setChartOptions(NO_DATA);
     }
     parser.end();
-  }, [dataBlob]);
+  }, [dataBlob]); //Change in dataBlob should mean a new dataset
 
   console.log("End of first time");
 

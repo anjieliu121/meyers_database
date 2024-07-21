@@ -34,7 +34,12 @@ const buttonVariants = cva(
 )
 
 const Button = React.forwardRef(({ className, variant, size, asChild = false, ...props }, ref) => {
-  const Comp = asChild ? Slot : "button"
+  //Apparently, you are allowed to assign the tag name of a standard HTML
+  //element to a variable that starts with a capital letter, and then
+  //that variable basically becomes a React component that acts exactly
+  //like the standard HTML element. I didn't find any documentation on
+  //this behavior, but it works.
+  const Comp = asChild ? Slot : "button";
   return (
     (<Comp
       className={cn(buttonVariants({ variant, size, className }))}
@@ -42,6 +47,6 @@ const Button = React.forwardRef(({ className, variant, size, asChild = false, ..
       {...props} />)
   );
 })
-Button.displayName = "Button"
+Button.displayName = "Button";
 
 export { Button, buttonVariants }

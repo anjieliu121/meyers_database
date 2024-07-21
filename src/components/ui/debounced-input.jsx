@@ -1,8 +1,8 @@
 import {useState, useEffect, useCallback} from 'react';
  
-export default function DebouncedInput({
+export function DebouncedInput({
   value: initialValue,
-  onChange,
+  changeAfterDelay,
   debounce = 500,
   ...props
 }) {
@@ -19,16 +19,17 @@ export default function DebouncedInput({
     }, [initialValue]);*/
   
     useEffect(() => {
-      console.log("I run every time columnFilterValue changes")
+      console.log("I run every time columnFilterValue changes");
       const timeout = setTimeout(() => {
-        console.log("Changing column state!");
+        console.log("Debouncing has finished & pushing input!");
+        console.log(value);
         //Sets the ColumnFilterValue state
         //Triggers re-render starting in the DataTable component
-        onChange(value);
+        changeAfterDelay(value);
       }, debounce);
   
       return () => clearTimeout(timeout);
-    }, [value]);
+    }, [value, changeAfterDelay, debounce]);
   
     return (
       <input 

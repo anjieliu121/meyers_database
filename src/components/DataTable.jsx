@@ -19,58 +19,109 @@ import {
     TableRow,
 } from "@/components/ui/table"
 
+import {
+    DropdownMenu,
+    DropdownMenuCheckboxItem,
+    DropdownMenuContent,
+    DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu"
+   
 import { Button, buttonVariants } from "@/components/ui/button";
 
 import Filter from "@/components/ui/filter"
 
 import { CSVLink } from "react-csv";
 
-import { useMemo } from 'react';
+import { memo, useMemo } from 'react';
 
-export function DataTable({columns, data,}) {
+const DataTable = memo(({columns, data, columnFilters, setColumnFilters}) => {
     //TODO: Figure out why DataTable rerenders 2x on filter & sort
     console.log("- DataTable Rerender");
-    console.log(data);
-    console.log(columns);
+    //console.log(data);
+    //console.log(columns);
+
     const table = useReactTable({
-    data,
-    columns,
-    getCoreRowModel: getCoreRowModel(),
-    getPaginationRowModel: getPaginationRowModel(),
-    getSortedRowModel: getSortedRowModel(),
-    getFilteredRowModel: getFilteredRowModel(),
-    getFacetedRowModel: getFacetedRowModel(), // client-side faceting
-    getFacetedUniqueValues: getFacetedUniqueValues(), // generate unique values for select filter/autocomplete
-    getFacetedMinMaxValues: getFacetedMinMaxValues(),
+        data,
+        columns,
+        state: {
+            columnFilters,
+        },
+        onColumnFiltersChange: setColumnFilters,
+        getCoreRowModel: getCoreRowModel(),
+        getPaginationRowModel: getPaginationRowModel(),
+        getSortedRowModel: getSortedRowModel(),
+        getFilteredRowModel: getFilteredRowModel(),
+        getFacetedRowModel: getFacetedRowModel(), // client-side faceting
+        getFacetedUniqueValues: getFacetedUniqueValues(), // generate unique values for select filter/autocomplete
+        getFacetedMinMaxValues: getFacetedMinMaxValues(),
+        manualFiltering: true,
     });
+
+    console.log("STATES");
+    console.log(table.getState());
     
+    // console.log("HEADERS");
+    // console.log(table.getAllColumns());
+    // console.log("CLOSE");
+
     /*Returns the JSON of the visible portion of the filtered table*/
     //TODO: Also sort the table before downloading
     //TODO: figure out a way to only calculate json when user actually
     //clicks the download button; might not use CSVLink for that
     const json = useMemo(() => {
-    //e.target.data = [['hi', 'there']];
-    //console.log(e.target);
-    //e.preventDefault();
-    const json = [];
-    const headers = table.getHeaderGroups()[0].headers.map(header => header.id);
-    //console.log(headers);
-    json.push(headers);
-    table.getFilteredRowModel().rows.forEach((row) => {
-        const cells = row.getVisibleCells();
-        const values = cells.map((cell) => cell.getValue() ?? '');
-        //console.log(values);
-        json.push(values);
-    });
-    console.log(json);
-    //console.log(typeof json);
-    console.log("JSON.stringify(table.getState()) changed");
-    return json; 
+        //e.target.data = [['hi', 'there']];
+        //console.log(e.target);
+        //e.preventDefault();
+        const json = [];
+        const headers = table.getHeaderGroups()[0].headers.map(header => header.id);
+        //console.log(headers);
+        json.push(headers);
+        table.getFilteredRowModel().rows.forEach((row) => {
+            const cells = row.getVisibleCells();
+            const values = cells.map((cell) => cell.getValue() ?? '');
+            //console.log(values);
+            json.push(values);
+        });
+        // console.log(json);
+        // console.log(typeof json);
+        // console.log("JSON.stringify(table.getState()) changed");
+        return json; 
     }, [JSON.stringify(table.getState())]);
 
     return (
     <>
     <div className="tw-rounded-md tw-border">
+        {/*Toggle columns' visibilities*/}
+        <DropdownMenu>
+          <DropdownMenuTrigger asChild>
+            <Button variant="outline" className="ml-auto">
+              Columns
+            </Button>
+          </DropdownMenuTrigger>
+          <DropdownMenuContent align="end">
+            {table
+              .getAllColumns()
+              .filter(
+                (column) => column.getCanHide()
+              )
+              .map((column) => {
+                return (
+                  <DropdownMenuCheckboxItem
+                    key={column.id}
+                    className="capitalize"
+                    checked={column.getIsVisible()}
+                    onCheckedChange={(value) =>
+                      //Ensures value becomes a boolean value
+                      column.toggleVisibility(!!value)
+                    }
+                  >
+                    {column.id}
+                  </DropdownMenuCheckboxItem>
+                )
+              })}
+          </DropdownMenuContent>
+        </DropdownMenu>
+
         {/*Download as CSV Button*/}
         {<CSVLink filename="my-file.csv" data={json}>
         Export to CSV
@@ -93,10 +144,18 @@ export function DataTable({columns, data,}) {
                             header.column.columnDef.header,
                             header.getContext()
                         )}
-                        {/*Each column header allows user to input filters*/}
-                        {header.column.getCanFilter() ? (
+                        {//Each column header allows user to input filters
+                        }
+                        {//Adding filters to DataTable causes very
+                         //weird infinite rendering behavior & strange
+                         //filter state behavior. Perhaps manually setting
+                         //filter & using built in methods to set filters
+                         //are incomptaible. If you dare to proceed, remove
+                         //the exclamation mark before header
+                        }
+                        {!header.column.getCanFilter() ? (
                             <div>
-                            <Filter column={header.column} />
+                                <Filter column={header.column} />
                             </div>
                         ) : null}
                         </>
@@ -197,4 +256,6 @@ export function DataTable({columns, data,}) {
     </div>}
     </>
     )
-}
+});
+
+export default DataTable;

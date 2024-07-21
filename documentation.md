@@ -10,6 +10,7 @@ $ cd meyers_database
 $ npm install
 $ npm run dev
 ```
+
 # General Bugs
 
 ## Bug 1 Python
@@ -164,7 +165,14 @@ fetch() with proxy in package.json returns text/html
 
 # Feature 5 Data Visualization
 * Package used: Tailwindcss (Postcss & Autoprefixer)
-* UI library referenced: Flowbite (built with Tailwindcss classes)
+* UI library referenced
+  - Flowbite (built with Tailwindcss classes)
+  - Shadcn/ui (built with Radix UI & Tailwindcss classes)
+
+## Feature 5.1 Scrollable categorical input
+
+I added a maximum height property (`tw-max-h-[8rem]`) and changed `tw-overflow-hidden` to `tw-overflow-auto` for the `DropdownMenuPrimitive.Content` component in `dropdown-menu.jsx`.
+
 ## Bug 5.1 ReferenceError: Buffer is not defined
 * Cause: The `csv-parse` package uses the core Node.js module `buffer` that is not supported in some browsers.
 * Solution: Install the `vite-plugin-node-polyfills` package into `devDependencies` and include the package as a plugin in `vite.config.js`. More detailed instructions can be found on the [installation website](https://www.npmjs.com/package/vite-plugin-node-polyfills).
@@ -183,3 +191,46 @@ The reference here refers to the reference created by a `useRef` hook.
 
 ## Bug 5.4 TailwindCSS Classes Not Working
 This is a basic problem: remember to import the CSS file where you included the TailwindCSS classes. Vite supports including the CSS file conveniently through the `import` syntax similar to how you would import a JS file.
+
+## Bug 5.5 Check that a complete date adapter is provided
+ChartJS doesn't implement date recognitions by default: an external date formatting library and a corresponding adapter to include said library into ChartJS implementations are required. See a list [here](https://github.com/chartjs/awesome?tab=readme-ov-file#adapters). I chose the `data-fns` library and its corresponding adapter library `chartjs-adapter-date-fns`
+
+## Bug 5.6 "time" is not a registered scale
+Since I'm implementing tree-shaking (fancy term for only importing select functionalities as I need them), remember to import `TimeScale` and/or `TimeSeriesScale`. Also, `register` them after.
+
+## Bug 5.7 Use "yyyy" instead of "YYYY"
+The `data-fns` library switched to [Unicode tokens](https://github.com/date-fns/date-fns/blob/main/docs/unicodeTokens.md) since v2, so their parsing function requires slightly different formats compared to other date libraries. Lower case `y` formats standard calendar years, while upper case `Y` formats a special type of year called ISO year that has whole-number weeks? It's a bit different to say at the least.
+
+## Bug 5.8 Graph behaves weirdly after setting `parsing` to `false` in the options for a `ChartJS` graph
+You need to conform to format your input to the internal structure of both the graphs & the axes.
+
+### Bug 5.8.1 Line graph with time series x-axis
+First of all, data should be given in the `{x: val, y: val}` format. Secondly, nsure that the time is given in [Unix timestamps](https://en.wikipedia.org/wiki/Unix_time).
+
+### Bug 5.8.2 Time series data processed with `getUnixTime()` from the `date-fns` library becomes incorrect
+`getUnixTime()` returns the timestamp in seconds, but JavaScript keeps timestamps in milliseconds. As such, multiply the result by 1000 to get the correct timestamp for `ChartJS`.
+
+### Bug 5.8.3 Bar graph with categorical x-axis
+In addition to giving data in the `{x: val, y: val}` format, the category scale requires you to also input the `data.labels` field outside of all the datasets.
+
+## Bug 5.9 Stacked bar chart overlaps instead of stacking
+Make sure to set `stacked` to `true` for both the x and y axes. Assuming the x-axis is the index axis: the `stacked` property on the x-axis allows bars to overlap horizontally, while the `stacked` property on the y-axis enables the actual stacking.
+
+## Bug 5.10 Graph with time series as x-axis not showing up
+
+If the range of time spans many decades, but your time series data is granular to the seconds, then there's no reasonable way for ChartJS to meaningfully separate the different time frames (which, again, are measure in seconds but spread throughout the decades). Then, I believe that ChartJS simply does not plot anything.
+
+In the extreme case that your time series data is as described above, you may have to make the choice to sacrifice the precision of your data and remove some of the more granular time series information (ex. only keeping what date it was instead of being precise to the second).
+
+## Bug 5.11 The previous state of column filters are always the initial state
+* Cause: I was calling another function `setNewFilter` inside the function `processRangeInput` wrapped in `useCallback`, but I forgot to include `setNewFilter` in the dependency list of `processRangeInput`, causing `processRangeInput` to always call the initial version of `setNewFilter` that still has the initial state instead of the most up-to-date state.
+* Solution: Remember to include in the dependency list any variable that can change.
+
+## Bug 5.12 `table.getHeaderGroups()` throws error
+* Cause: For some reason, the column definitions argument passed to `useReactTable()` must be named `columns` and nothing else (not `colDefs`, for example)
+* Solution: I'm not sure why; I'll look into the implementation later. After some research, this is actually the expected behavior of JavaScript objects: if you pass a variable into a JS object without a key, then the variable name will automatically be the key. As a result, since `useReactTable` takes a JS object as its sole argument, passing in the variable `columns` is actually equivalent to passing in a `columns: columns_value` entry. Since the key `columns` is an expected key name that's going to be used later, the variable has to be named `columns` when passed as an argument to `useReactTable`. Otherwise, explictly state the key-value pair with `columns: whatever_variable_name_for_column_definitions`.
+
+## UNRESOLVED Bug 5.13 Data table with filters doesn't work
+* What does work: when filters aren't enabled (no Filter components), the initial state works, inputting with time-series input works; everything works as intended
+* What doesn't work: when filters are enabled, `getFacetedMinMaxValues()` behaves weirdly (wraps min value of day in an array?)
+* Possible cause: `getFilterValue()` in DataTable can return `undefined` and passes `undefined` to `curRange` prop of `RangeInput`
