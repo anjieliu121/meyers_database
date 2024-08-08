@@ -8,7 +8,7 @@ import {
     getFacetedMinMaxValues,
     getFacetedRowModel,
     getFacetedUniqueValues,
-} from "@tanstack/react-table"
+} from "@/components/ReactTable"
    
 import {
     Table,
@@ -153,9 +153,12 @@ const DataTable = memo(({columns, data, columnFilters, setColumnFilters}) => {
                          //are incomptaible. If you dare to proceed, remove
                          //the exclamation mark before header
                         }
-                        {!header.column.getCanFilter() ? (
+                        {header.column.getCanFilter() ? (
                             <div>
-                                <Filter column={header.column} />
+                                <Filter 
+                                    column={header.column} 
+                                    table={table}
+                                />
                             </div>
                         ) : null}
                         </>

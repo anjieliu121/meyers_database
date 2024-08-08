@@ -230,7 +230,20 @@ In the extreme case that your time series data is as described above, you may ha
 * Cause: For some reason, the column definitions argument passed to `useReactTable()` must be named `columns` and nothing else (not `colDefs`, for example)
 * Solution: I'm not sure why; I'll look into the implementation later. After some research, this is actually the expected behavior of JavaScript objects: if you pass a variable into a JS object without a key, then the variable name will automatically be the key. As a result, since `useReactTable` takes a JS object as its sole argument, passing in the variable `columns` is actually equivalent to passing in a `columns: columns_value` entry. Since the key `columns` is an expected key name that's going to be used later, the variable has to be named `columns` when passed as an argument to `useReactTable`. Otherwise, explictly state the key-value pair with `columns: whatever_variable_name_for_column_definitions`.
 
-## UNRESOLVED Bug 5.13 Data table with filters doesn't work
+## Bug 5.13 Data table with filters doesn't work
 * What does work: when filters aren't enabled (no Filter components), the initial state works, inputting with time-series input works; everything works as intended
 * What doesn't work: when filters are enabled, `getFacetedMinMaxValues()` behaves weirdly (wraps min value of day in an array?)
-* Possible cause: `getFilterValue()` in DataTable can return `undefined` and passes `undefined` to `curRange` prop of `RangeInput`
+* Possible cause: `getFilterValue()` in `Filter` can return `undefined` and passes `undefined` to `curRange` prop of `RangeInput`
+* Another bug: It appears that the implementation of `getFacetedMinMaxValues()` has a bug. The internal implementation uses a function called `getUniqueValues(columnId)` that returns an array, but that array is used as the default value of min and max. Since JavaScript allows comparing a number to a single-number array, the function probably expected the default min and max to not be the actual min and max. However, since the State Climate dataset is sorted, the initial value of 1 is actually the min, so the function returns `[array(1), number]` instead of `[number, number]`
+* Another bug: I forgot how to add the columns back...
+* I did `slice()` on the column array; remove that and then I'm fine
+* I forgot to rename `spec.hum` to `spec_hum` when moving the dataset to a static file which causes the undefined behavior
+
+### Bug 5.13.1 Infinite rerenders of `DataTable`
+* Cause: Including the `changeAfterDelay()` event handler in the dependency array of the `useEffect` hook in `DebouncedInput`
+
+## Bug 5.14 `subarray()`
+* `subarray()` doesn't exist for a regular array; use `slice()` (NOT `splice()`)
+
+## Bug 5.15 x values are all 0 on ChartJS
+* Specify `type: 'linear'` for x-axis

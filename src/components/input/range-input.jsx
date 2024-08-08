@@ -29,10 +29,10 @@ export function RangeInput({quantVar, curRange, minNum, maxNum, setNewFilter}) {
 
                 setNewFilter(newFilter);
             } else {
-                alert(`Days should be positive integers in range ${minNum} to ${maxNum}`);
+                //alert(`Days should be positive integers in range ${minNum} to ${maxNum}`);
             }
         } else {
-            alert(`Days should be positive integers in range ${minNum} to ${maxNum}`);
+            //alert(`Days should be positive integers in range ${minNum} to ${maxNum}`);
         }
     }, [rangeInputRef, setNewFilter]);
 

@@ -98,7 +98,10 @@ const DataDisplay = ({dataBlob, pageInfo}) => {
       }
 
       const headers = records[0];
-      //Change spec.hum to spec_hum
+
+      //Change spec.hum to spec_hum because Tanstack table
+      //interprets . in key string as indication of a nested key
+
       headers[3] = "spec_hum";
       console.log(headers);
       const indices = [...Array(headers.length).keys()];

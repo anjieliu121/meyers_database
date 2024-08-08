@@ -1,8 +1,9 @@
 import {useState, useEffect, useCallback} from 'react';
  
+const placeholderFunction = () => 0;
 export function DebouncedInput({
   value: initialValue,
-  changeAfterDelay,
+  changeAfterDelay = placeholderFunction,
   debounce = 500,
   ...props
 }) {
@@ -29,7 +30,7 @@ export function DebouncedInput({
       }, debounce);
   
       return () => clearTimeout(timeout);
-    }, [value, changeAfterDelay, debounce]);
+    }, [value, debounce]);
   
     return (
       <input 

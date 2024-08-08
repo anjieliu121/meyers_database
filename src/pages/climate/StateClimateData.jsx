@@ -4,6 +4,30 @@ import { StateClimateDataConstants as Constants } from '@/constants/StateClimate
 import DataTable from '@/components/DataTable';
 import * as json from './StateClimateData.json';
 
+import {
+    Chart as ChartJS,  
+    LinearScale,
+    CategoryScale,
+    PointElement,
+    LineElement,
+    Colors,
+    Legend,
+    Tooltip,
+    Title
+} from 'chart.js';
+
+import { Chart } from 'react-chartjs-2';
+
+ChartJS.register(
+    LinearScale,
+    CategoryScale,
+    PointElement,
+    LineElement,
+    Colors,
+    Legend,
+    Tooltip,
+    Title
+);
 // const TIME_SERIES_VARIABLE_INDEX = 1;
 // //Specifies information about each variable
 // const columnDefs = [
@@ -137,6 +161,68 @@ import * as json from './StateClimateData.json';
 //     'state' : 1,
 // };
 
+const chartOptions = {
+    //parsing: false,
+    pointRadius: 5,
+    //normalized: true,
+    //spanGaps: true,
+    animation: true,
+    plugins: {
+        legend: {
+            display: false
+        },
+        tooltip: {
+            enabled: true
+        },
+        title: {
+            display: true,
+            text: "This is a title",
+            font: {
+                size: 24,
+                style: 'normal',
+                family: 'Times'
+            },
+            padding: {
+                top: 20, 
+                bottom: 20
+            }
+        }
+    },
+    scales: {
+        x: {
+            type: 'linear',
+            display: true,
+            title: {
+                display: true,
+                text: 'Day',
+                color: '#666',
+                font: {
+                    family: 'Times',
+                    size: 20,
+                    weight: 'normal',
+                    lineHeight: 1.2,
+                },
+                padding: {top: 20, left: 0, right: 0, bottom: 20}
+            }
+        },
+        y: {
+            display: true,
+            title: {
+                display: true,
+                text: 'Temperature',
+                color: '#666',
+                font: {
+                    family: 'Times',
+                    size: 20,
+                    style: 'normal',
+                    lineHeight: 1.2
+                },
+                padding: {top: 30, left: 0, right: 0, bottom: 30}
+            }
+        }
+    }
+};
+
 const { 
     COL_DEFS, 
     DEFAULT_FILTERS, 
@@ -149,9 +235,33 @@ const {
 } = Constants;
 
 const getData = () => {
+    //let data = json.data;
+    //const newdata = [];
+    //data.forEach(entry => newdata.push({"state": entry.state, "day": entry.day}));
+    //return newdata;
+
     return json.data;
 }
 
+const getNormalizedChartData = (data, quantVar) => {
+    const normalizedData = [];
+    data.forEach(row => normalizedData.push({
+        x: row[TS_VAR],
+        y: row[quantVar],
+    }));
+    console.log("Normalized Data");
+    console.log(quantVar);
+    console.log(normalizedData);
+    const returned = {
+        datasets: [
+            {
+                data: normalizedData,
+            }
+        ]
+    };
+    console.log(returned);
+    return returned;
+}
 const StateClimateData = () => {
     //TODO: When I enable manual filtering for the data table in the future,
     //definitely combine columnFIlters & columnFiltersState into 1 state
@@ -250,9 +360,14 @@ const StateClimateData = () => {
         }
     }, [data, columnFilters]);
 
+    console.log("Filtered Data");
+    console.log(filteredData);
+
+    const normalizedChartData = getNormalizedChartData(filteredData, quantVar);
+
     return (
         <div>
-            {/*<TimeSeriesInput
+            {<TimeSeriesInput
                 catVar={CAT_VAR}
                 catVals={catValsSorted}
                 allQuantVars={allQuantVars}
@@ -263,13 +378,18 @@ const StateClimateData = () => {
                 maxTime={MAX_TIME}
                 columnFilters={columnFilters}
                 setColumnFilters={setColumnFilters}
-            />*/}
+            />}
             <DataTable 
                 columns={COL_DEFS} 
                 data={filteredData}
                 columnFilters={columnFilters}
                 setColumnFilters={setColumnFilters}
-            />    
+            /> 
+            {
+            // For statically loaded datasets, chart doesn't need a ref
+            // But if dynammically fetching data, add a ref for useEffect()
+            }
+            <Chart type='line' options={chartOptions} data={normalizedChartData}/>   
         </div>
     )
 }

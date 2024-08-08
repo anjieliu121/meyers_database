@@ -3,7 +3,7 @@ import { DebouncedInput } from './debounced-input';
 import { RangeInput } from '@/components/input/range-input';
 import { useMemo, useCallback } from 'react';
 
-export default function Filter({ column }) {
+export default function Filter({ column, table }) {
     console.log("-- Filter Rerender");
     //See the column definitions in columns.jsx
     const { filterVariant } = column.columnDef.meta ?? {};
@@ -19,23 +19,37 @@ export default function Filter({ column }) {
       [column.getFacetedUniqueValues(), filterVariant]
     );
 
-    const minMaxValues = useMemo(() => 
-      filterVariant === 'range'
-        ? column.getFacetedMinMaxValues()
-        : [],
-      [column, column.getFacetedMinMaxValues, column.getFacetedMinMaxValues(), filterVariant]
-    );
+    // Bug with getFacetedMinMaxValues(): see documentation
+
+    // const minMaxValues = useMemo(() => {
+    //   console.log(table.getRowModel());
+    //   return filterVariant === 'range'
+    //     ? column.getFacetedMinMaxValues()
+    //     : []
+    // }, [column.getFacetedMinMaxValues(), filterVariant]);
+
+    const minMaxValues = useMemo(() => {
+      if (filterVariant === 'range') {
+        const uniqueValues = Array.from(column.getFacetedUniqueValues().keys()).sort((a, b) => a - b);
+        return [Math.min(...uniqueValues), Math.max(...uniqueValues)];
+      }
+      return [];
+    }, [column.getFacetedMinMaxValues(), filterVariant]);
 
     //IDK something is wrong with getFacetedMinMaxValues
     console.log("COLUMN");
     console.log(column);
-    console.log("MIN MAX");
-    console.log(minMaxValues);
-    console.log("FACETED MIN MAX");
-    console.log(column.getFacetedMinMaxValues());
-    console.log("UNIQUE VALUES");
-    console.log(column.getFacetedUniqueValues());
-
+    // console.log("MIN MAX");
+    // console.log(minMaxValues);
+    // console.log("FACETED MIN MAX");
+    // console.log(column.getFacetedMinMaxValues());
+    // console.log("UNIQUE VALUES");
+    const unique = Array.from(column.getFacetedUniqueValues().keys()).sort((a, b) => a - b);
+    //This works, so what's happening with getFacetedMinMaxValues() ???
+    console.log(unique);
+    console.log([Math.min(...unique), Math.max(...unique)]);
+    //console.log(Array.from(column.getFacetedUniqueValues().keys()).sort((a, b) => a - b));
+    //console.log(["HI", 3]);
 
     const setColumnFilterDirect = useCallback(value => {
       column.setFilterValue(value);
@@ -53,7 +67,7 @@ export default function Filter({ column }) {
       <div>
         <RangeInput
             quantVar={column.id}
-            curRange={columnFilterVal ?? [-99999999, 99999999]}
+            curRange={columnFilterVal ?? minMaxValues}
             minNum={minMaxValues[0]}
             maxNum={minMaxValues[1]}
             setNewFilter={setColumnFilterDirect}
