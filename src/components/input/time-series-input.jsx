@@ -82,31 +82,6 @@ export function TimeSeriesInput({
         // }
     }, [catVar, columnFilters, setColumnFilters]);
 
-    //Does not call setNewFilter() unless input is valid
-    const processRangeInput = useCallback(() => {
-        const lower = rangeInputRef.current.children[0].value;
-        const upper = rangeInputRef.current.children[1].value;
-        if (lower === "" || upper === "")
-            return;
-        const valid = testIsPositiveInteger(lower) && testIsPositiveInteger(upper);
-        //console.log(valid ? "VALID INPUT" : "eh");
-        if(valid) {
-            const lowerNum = parseInt(lower);
-            const upperNum = parseInt(upper);
-            if(lowerNum <= upperNum && lowerNum >= minTime && upperNum <= maxTime) {
-                const newFilter = {
-                    id: tsVar,
-                    value: [lowerNum, upperNum],
-                };
-
-                setNewFilter(newFilter);
-            } else {
-                alert(`Days should be positive integers in range ${minTime} to ${maxTime}`);
-            }
-        } else {
-            alert(`Days should be positive integers in range ${minTime} to ${maxTime}`);
-        }
-    }, [rangeInputRef, setNewFilter]);
             
     const curCatVal = useMemo(() => {
         const filter = columnFilters.find(filter => filter.id === catVar);

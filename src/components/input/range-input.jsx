@@ -26,7 +26,9 @@ export function RangeInput({quantVar, curRange, minNum, maxNum, setNewFilter}) {
                     id: quantVar,
                     value: [lowerNum, upperNum],
                 };
-
+                console.log("New Filter");
+                console.log(quantVar);
+                console.log([lowerNum, upperNum]);
                 setNewFilter(newFilter);
             } else {
                 //alert(`Days should be positive integers in range ${minNum} to ${maxNum}`);

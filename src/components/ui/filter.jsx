@@ -3,13 +3,15 @@ import { DebouncedInput } from './debounced-input';
 import { RangeInput } from '@/components/input/range-input';
 import { useMemo, useCallback } from 'react';
 
+//table is only for debugging
 export default function Filter({ column, table }) {
     console.log("-- Filter Rerender");
     //See the column definitions in columns.jsx
     const { filterVariant } = column.columnDef.meta ?? {};
   
     const columnFilterVal = column.getFilterValue();
-  
+    console.log("Column Filter Value");
+    console.log(columnFilterVal);
     const sortedUniqueValues = useMemo(() =>
       filterVariant === 'range'
         ? []
@@ -39,6 +41,8 @@ export default function Filter({ column, table }) {
     //IDK something is wrong with getFacetedMinMaxValues
     console.log("COLUMN");
     console.log(column);
+    console.log("Column Filters State");
+    console.log(JSON.parse(JSON.stringify(table.getState().columnFilters)));
     // console.log("MIN MAX");
     // console.log(minMaxValues);
     // console.log("FACETED MIN MAX");
