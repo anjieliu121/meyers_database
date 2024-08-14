@@ -56,7 +56,9 @@ export default function Filter({ column, table }) {
     //console.log(["HI", 3]);
 
     const setColumnFilterDirect = useCallback(value => {
+      console.log("Directly setting filters");
       column.setFilterValue(value);
+      console.log(table.getState().columnFilters);
       return;
     }, [column.setFilterValue]);
 

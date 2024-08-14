@@ -296,7 +296,7 @@ const StateClimateData = () => {
     //const [columnFilters, setColumnFilters] = useState([]);
     const [columnFilters, setColumnFilters] = useState(DEFAULT_FILTERS);
     const [quantVar, setQuantVar] = useState(DEFAULT_QUANT_VAR);
-
+    
     //Obtains all unique values of the 'state' categorical variable
     const data = getData();
     const catValsSet = new Set([]);

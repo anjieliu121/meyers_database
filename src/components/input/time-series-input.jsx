@@ -41,7 +41,8 @@ export function TimeSeriesInput({
         const old_i = columnFilters.findIndex(filter => {
             return newFilter.id === filter.id;
         });
-
+        console.log("New Filter");
+        console.log(newFilter);
         if(old_i === -1) {
             console.log("Brand new filter");
             setColumnFilters([...columnFilters, newFilter]);

@@ -8,12 +8,12 @@ import {BrowserRouter as Router} from "react-router-dom";
 import './css/index.css'
 
 ReactDOM.createRoot(document.getElementById('root')).render(
-  <React.StrictMode>
+
       <Router>
           {/*<App />*/}
           {/*<TimeSeries />*/}
           {/*<Bar />*/}
           {<StateClimateData />}
       </Router>
-  </React.StrictMode>,
+
 )

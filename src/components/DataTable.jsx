@@ -59,7 +59,7 @@ const DataTable = memo(({columns, data, columnFilters, setColumnFilters}) => {
 
     console.log("STATES");
     console.log(table.getState());
-    
+    console.log(table.getState().columnFilters);
     // console.log("HEADERS");
     // console.log(table.getAllColumns());
     // console.log("CLOSE");
